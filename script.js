@@ -1,4 +1,4 @@
-
+let modalQt = 1;
 
 pizzaJson.map((item, index)=>{
     let pizzaItem = document.querySelector('.models .pizza-item').cloneNode(true);
@@ -11,6 +11,7 @@ pizzaJson.map((item, index)=>{
     pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$ ${item.price.toFixed(2)}`;
     pizzaItem.querySelector('a').addEventListener('click', (e)=>{
         e.preventDefault();
+        let modalQt = 1;
         let key = e.target.closest('.pizza-item').getAttribute('data-key');
 
         document.querySelector('.pizzaBig img').src = pizzaJson[key].img;
@@ -27,6 +28,9 @@ pizzaJson.map((item, index)=>{
 
         });
 
+
+        document.querySelector('.pizzaInfo--qt').innerHTML = modalQt;
+
         document.querySelector('.pizzaWindowArea').style.opacity = 0;
         document.querySelector('.pizzaWindowArea').style.display = 'flex';
         setTimeout(()=>{
@@ -35,4 +39,34 @@ pizzaJson.map((item, index)=>{
     });
     
     document.querySelector('.pizza-area').append(pizzaItem);
+});
+
+
+
+//MODAL
+function closeModal() {
+    document.querySelector('.pizzaWindowArea').style.opacity = 0;
+    setTimeout(()=>{
+        document.querySelector('.pizzaWindowArea').style.display = 'none';
+    }, 200);
+}
+
+document.querySelectorAll('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item)=>{
+    item.addEventListener('click', closeModal);
+});
+document.querySelector('.pizzaInfo--qtmenos').addEventListener('click', ()=>{
+    if(modalQt > 1) {
+        modalQt--;
+        document.querySelector('.pizzaInfo--qt').innerHTML = modalQt;
+    }
+});
+document.querySelector('.pizzaInfo--qtmais').addEventListener('click', ()=>{
+    modalQt++;
+    document.querySelector('.pizzaInfo--qt').innerHTML = modalQt;
+});
+document.querySelectorAll('.pizzaInfo--size').forEach((size, sizeIndex)=>{
+    size.addEventListener('click', (e)=>{
+        document.querySelector('.pizzaInfo--size.selected').classList.remove('selected');
+        size.classList.add('selected');
+    })
 });
