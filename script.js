@@ -17,7 +17,7 @@ pizzaJson.map((item, index)=>{
         e.preventDefault();
         let modalQt = 1;
         let key = e.target.closest('.pizza-item').getAttribute('data-key');
-        let modalKey = key;
+        modalKey = key;
 
 
         document.querySelector('.pizzaBig img').src = pizzaJson[key].img;
@@ -81,7 +81,6 @@ document.querySelectorAll('.pizzaInfo--size').forEach((size, sizeIndex)=>{
 
 // CARRINHO
 document.querySelector('.pizzaInfo--addButton').addEventListener('click', ()=>{
-        
     let size = parseInt(document.querySelector('.pizzaInfo--size.selected').getAttribute('data-key'));
 
     let identifier = pizzaJson[modalKey].id+'@'+size;
@@ -99,6 +98,44 @@ document.querySelector('.pizzaInfo--addButton').addEventListener('click', ()=>{
         });
     }
 
+    updateCart();
     closeModal();
 
 });
+
+function updateCart() {
+
+    if(cart.length > 0) {
+        document.querySelector('aside').classList.add('show');
+        document.querySelector('.cart').innerHTML = '';
+        for (let i in cart) {
+            let pizzaItem = pizzaJson.find((item)=>item.id == cart[i].id);
+            let cartItem = document.querySelector('.models .cart--item').cloneNode(true);
+            let pizzaSizeName = pizzaJson[cart[i].id].sizes[cart[i].size];
+            let pizzaName = `${pizzaItem.name} (${pizzaSizeName})}`;
+
+            cartItem.querySelector('img').src = pizzaItem.img;
+            cartItem.querySelector('.cart--item-nome').innerHTML = pizzaName;
+            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt;
+            cartItem.querySelector('.cart--item-qtmenos').addEventListener('click',()=>{
+                if(cart[i].qt > 1){
+                    cart[i].qt--;
+                }else{
+                    cart.splice(i,1);
+                }
+                updateCart();
+            });
+            cartItem.querySelector('.cart--item-qtmais').addEventListener('click',()=>{
+                cart[i].qt++;
+                updateCart();
+            });
+
+            
+            document.querySelector('.cart').append(cartItem);
+
+        }
+    } else {
+        document.querySelector('aside').classList.remove('show');
+    }
+
+}
