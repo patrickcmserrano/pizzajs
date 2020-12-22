@@ -103,14 +103,26 @@ document.querySelector('.pizzaInfo--addButton').addEventListener('click', ()=>{
 
 });
 
+document.querySelector('.menu-openner').addEventListener('click', ()=>{
+    if(cart.length > 0){
+        document.querySelector('aside').style.left = '0'
+    }
+});
+document.querySelector('.menu-closer').addEventListener('click', ()=>{
+    document.querySelector('aside').style.left = '100vw'
+});
+
+
 function updateCart() {
+    document.querySelector('.menu-openner span').innerHTML = cart.length;
 
     if(cart.length > 0) {
         document.querySelector('aside').classList.add('show');
+        //document.querySelector('aside').style.left = '0'
         document.querySelector('.cart').innerHTML = '';
         
         let subtotal = 0;
-        letdesconto = 0;
+        let desconto = 0;
         let total = 0;
 
         for (let i in cart) {
@@ -150,6 +162,7 @@ function updateCart() {
         }
     } else {
         document.querySelector('aside').classList.remove('show');
+        document.querySelector('aside').style.left = '100vw';
     }
 
 }
